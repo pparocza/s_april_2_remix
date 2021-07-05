@@ -2470,8 +2470,6 @@ function MyBuffer(nChannels, length, sRate){
 	this.length = length;
 	this.sRate = sRate;
 
-	this.playbackRateInlet = new MyGain(1);
-
 	this.buffer = audioCtx.createBuffer(this.nChannels, this.sRate*this.length, this.sRate);
 
 }
@@ -2483,14 +2481,11 @@ MyBuffer.prototype = {
 	playbackRate: this.playbackRate,
 	loop: this.loop,
 
-	playbackRateInlet: this.playbackRateInlet,
-
 	start: function(){
 		this.bufferSource = audioCtx.createBufferSource();
 		this.bufferSource.loop = this.loop;
 		this.bufferSource.playbackRate.value = this.playbackRate;
 		this.bufferSource.buffer = this.buffer;
-		this.playbackRateInlet.connect(this.bufferSource.playbackRate);
 		this.bufferSource.connect(this.output);
 		this.bufferSource.start();
 	},
@@ -2507,7 +2502,6 @@ MyBuffer.prototype = {
 		this.bufferSource.loop = this.loop;
 		this.bufferSource.playbackRate.value = this.playbackRate;
 		this.bufferSource.buffer = this.buffer;
-		this.playbackRateInlet.connect(this.bufferSource.playbackRate);
 		this.bufferSource.connect(this.output);
 		this.bufferSource.start(this.time);
 
@@ -2520,9 +2514,7 @@ MyBuffer.prototype = {
 
 		this.bufferSource = audioCtx.createBufferSource();
 		this.bufferSource.loop = this.loop;
-		this.bufferSource.playbackRate.setValueAtTime(this.playbackRate, this.time);
 		this.bufferSource.buffer = this.buffer;
-		this.playbackRateInlet.connect(this.bufferSource.playbackRate);
 		this.bufferSource.connect(this.output);
 		this.bufferSource.start(this.time);
 
